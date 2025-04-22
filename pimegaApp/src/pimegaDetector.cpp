@@ -44,33 +44,33 @@ Codec_t pimegaDetector::getCodec() {
   Codec_t codec{};
 
   switch (comp_codec) {
-  case COMP_CODEC_BLOSC:
-    codec.name = codecName[NDCODEC_BLOSC];
-    break;
-  default:
-    codec.name = codecName[NDCODEC_NONE];
-    break;
+    case COMP_CODEC_BLOSC:
+      codec.name = codecName[NDCODEC_BLOSC];
+      break;
+    default:
+      codec.name = codecName[NDCODEC_NONE];
+      break;
   }
 
   switch (comp_compressor) {
-  case COMP_COMPRESSOR_BLOSCLZ:
-    codec.compressor = BLOSC_BLOSCLZ;
-    break;
-  case COMP_COMPRESSOR_LZ4:
-    codec.compressor = BLOSC_LZ4;
-    break;
+    case COMP_COMPRESSOR_BLOSCLZ:
+      codec.compressor = BLOSC_BLOSCLZ;
+      break;
+    case COMP_COMPRESSOR_LZ4:
+      codec.compressor = BLOSC_LZ4;
+      break;
   }
 
   switch (comp_shuffle) {
-  case COMP_SHUF_BIT:
-    codec.shuffle = BLOSC_BITSHUFFLE;
-    break;
-  case COMP_SHUF_BYTE:
-    codec.shuffle = BLOSC_SHUFFLE;
-    break;
-  case COMP_SHUF_NONE:
-    codec.shuffle = BLOSC_NOSHUFFLE;
-    break;
+    case COMP_SHUF_BIT:
+      codec.shuffle = BLOSC_BITSHUFFLE;
+      break;
+    case COMP_SHUF_BYTE:
+      codec.shuffle = BLOSC_SHUFFLE;
+      break;
+    case COMP_SHUF_NONE:
+      codec.shuffle = BLOSC_NOSHUFFLE;
+      break;
   }
 
   codec.level = comp_level;
@@ -78,7 +78,8 @@ Codec_t pimegaDetector::getCodec() {
   return codec;
 }
 
-void pimegaDetector::updateEpicsFrame(void *data, size_t size, NDDataType_t ndarray_dtype) {
+void pimegaDetector::updateEpicsFrame(void *data, size_t size,
+                                      NDDataType_t ndarray_dtype) {
   int sizex, sizey;
   getIntegerParam(ADMaxSizeX, &sizex);
   getIntegerParam(ADMaxSizeY, &sizey);
@@ -1061,8 +1062,7 @@ asynStatus pimegaDetector::writeFloat64(asynUser *pasynUser,
   if (status) {
     PIMEGA_PRINT(pimega, TRACE_MASK_ERROR,
                  "%s: Failed - status=%d function=%s(%d), value=%f - %s\n",
-                 functionName, status, paramName, function, value,
-                 err_str);
+                 functionName, status, paramName, function, value, err_str);
     updateIOCStatus(err_str);
   } else {
     /* Do callbacks so higher layers see any changes */
@@ -1484,7 +1484,8 @@ void pimegaDetector::connect(const char *address[10], unsigned short port,
       "ioc_frame_visualizer_callback", [this](void *data, size_t size) {
         int counter_depth;
         getParameter(PimegaCounterDepth, &counter_depth);
-        this->updateEpicsFrame(data, size, counter_depth == 3 ? NDUInt32 : NDUInt16);
+        this->updateEpicsFrame(data, size,
+                               counter_depth == 3 ? NDUInt32 : NDUInt16);
       });
 
   rc =

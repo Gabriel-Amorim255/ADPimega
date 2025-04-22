@@ -34,7 +34,6 @@
 // areaDetector includes
 #include "ADDriver.h"
 #include "Codec.h"
-
 #include "blosc.h"
 
 // pimega lib includes
@@ -255,7 +254,8 @@ class pimegaDetector : public ADDriver {
   virtual void alarmTask(void);
   virtual void acqTask(void);
   virtual void captureTask(void);
-  virtual void updateEpicsFrame(void *data, size_t size, NDDataType_t ndarray_dtype);
+  virtual void updateEpicsFrame(void *data, size_t size,
+                                NDDataType_t ndarray_dtype);
   void updateIOCStatus(const std::string_view message);
   void updateServerStatus(const std::string_view message);
   void newImageTask();
