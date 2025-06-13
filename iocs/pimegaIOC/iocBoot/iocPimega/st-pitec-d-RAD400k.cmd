@@ -70,7 +70,7 @@ epicsEnvSet("PIMEGA_NUM_MODULES_Y", "1")
 
 pimegaDetectorConfig("$(PORT)",$(PIMEGA_MODULE01_IP),$(PIMEGA_MODULE02_IP),$(PIMEGA_MODULE03_IP),$(PIMEGA_MODULE04_IP),$(PIMEGA_MODULE05_IP),$(PIMEGA_MODULE06_IP),$(PIMEGA_MODULE07_IP),$(PIMEGA_MODULE08_IP),$(PIMEGA_MODULE09_IP),$(PIMEGA_MODULE10_IP),$(PIMEGA_PORT), $(XSIZE), $(YSIZE), $(DMODEL), 0, 0, 0, 0, 0, 1, 1, 5418, 6467, 1, $(PIMEGA_NUM_MODULES_X), $(PIMEGA_NUM_MODULES_Y))
 
-dbLoadRecords("$(ADPIMEGA)/db/pimega.template","P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(ADPIMEGA)/db/pimega.template","P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1,HDF5_R=HDF1:")
 dbLoadRecords("$(ADPIMEGA)/db/NDFile.template","P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
 
 # Load asynRecord record
@@ -92,6 +92,11 @@ iocInit()
 dbpf(${PREFIX}cam1:FilePath,"${PIMEGA_PSS}/database/acquisitions")
 dbpf(${PREFIX}cam1:FileName,"test")
 dbpf(${PREFIX}cam1:FileTemplate,"%s%s_%3.3d.hdf5")
+
+dbpf(${PREFIX}HDF1:FilePath,"${PIMEGA_PSS}/database/acquisitions")
+dbpf(${PREFIX}HDF1:FileName,"sample")
+dbpf(${PREFIX}HDF1:FileTemplate,"%s%s_%3.3d.hdf5")
+
 dbpf(${PREFIX}cam1:dac_defaults_files,"${PIMEGA_PSS}/ioc/epics/iocs/pimegaIOC/iocBoot/iocPimega/config/RAD400k.ini")
 dbpf(${PREFIX}cam1:ImgChipNumberID, 1)
 dbpf(${PREFIX}image1:EnableCallbacks, 1)
