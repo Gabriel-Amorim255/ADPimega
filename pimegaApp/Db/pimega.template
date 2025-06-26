@@ -216,6 +216,30 @@ record(mbbi, "$(P)$(R)MedipixMode_RBV") {
 	field(SCAN, "I/O Intr")
 }
 
+record(calcout, "$(P)$(R)UpdateExtraDims") {
+    field(DESC, "Add extra dimension when in Dual Energy mode")
+    field(INPA, "$(P)$(R)MedipixMode_RBV CPP")
+    field(CALC, "A=3 ? 1 : 0")
+    field(OUT, "$(P)$(R)SetExtraDims.PROC PP")
+}
+
+record(calcout, "$(P)$(R)UpdateExtraDimSizeN") {
+    field(DESC, "Set ExtraDimSizeN based on MedipixMode")
+    field(INPA, "$(P)$(R)MedipixMode_RBV CPP")
+    field(CALC, "A = 3 ? 2 : 1")
+}
+
+record(sseq, "$(P)$(R)SetExtraDims") {
+    field(DOL1, "1")
+    field(LNK1, "$(P)$(HDF5_R)NumExtraDims PP")
+
+    field(DOL2, "$(P)$(R)UpdateExtraDimSizeN.VAL PP")
+    field(LNK2, "$(P)$(HDF5_R)ExtraDimSizeN PP")
+
+    field(DOL3, "$(P)$(R)NumExposures_RBV PP")
+    field(LNK3, "$(P)$(HDF5_R)ExtraDimSizeX PP")
+}
+
 #ExtBgIn
 record(ao, "$(P)$(R)ExtBgIn") {
 	field(DESC, "Set external Band-Gap voltage")
