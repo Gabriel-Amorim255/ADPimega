@@ -1482,10 +1482,10 @@ void pimegaDetector::connect(const char *address[10], unsigned short port,
 
   message_consumer->subscribe(
       "ioc_frame_visualizer_callback", [this](void *data, size_t size) {
-        int counter_depth;
-        getParameter(PimegaCounterDepth, &counter_depth);
+        int image_mode;
+        getParameter(PimegaMedipixMode, &image_mode);
         this->updateEpicsFrame(data, size,
-                               counter_depth == 3 ? NDUInt32 : NDUInt16);
+                               image_mode == MODE_B24 ? NDUInt32 : NDUInt16);
       });
 
   rc =
