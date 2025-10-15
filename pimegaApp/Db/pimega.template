@@ -1725,6 +1725,15 @@ record(mbbo,"$(P)$(R)FrameProcessMode") {
     field(TWST, "Geometric restoration")
     field(THVL, "3")
     field(THST, "Flatfield + Geometric")
+    field(FRVL, "4")
+    field(FRST, "Image Correction")
+    field(FVVL, "5")
+    field(FVST, "Image Correction + Flatfield")
+    field(SXVL, "6")
+    field(SXST, "Image Correction + Geometric")
+    field(SVVL, "7")
+    field(SVST, "Image Correction + Flatfield + Geometric")
+
 }
 
 record(mbbi,"$(P)$(R)FrameProcessMode_RBV") {
@@ -1739,6 +1748,14 @@ record(mbbi,"$(P)$(R)FrameProcessMode_RBV") {
     field(TWST, "Geometric restoration")
     field(THVL, "3")
     field(THST, "Flatfield + Geometric")
+    field(FRVL, "4")
+    field(FRST, "Image Correction")
+    field(FVVL, "5")
+    field(FVST, "Image Correction + Flatfield")
+    field(SXVL, "6")
+    field(SXST, "Image Correction + Geometric")
+    field(SVVL, "7")
+    field(SVST, "Image Correction + Flatfield + Geometric")
    	field(SCAN, "I/O Intr")
 }
 
