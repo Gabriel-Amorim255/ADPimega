@@ -88,6 +88,7 @@ set_requestfile_path("$(ADPIMEGA)/pimegaApp/Db")
 iocInit()
 
 dbpf(${PREFIX}cam1:MB_SendMode, 4)
+dbpf(${PREFIX}cam1:FrameProcessMode, 4)
 dbpf(${PREFIX}cam1:FilePath,"${PIMEGA_PSS}/database/acquisitions")
 dbpf(${PREFIX}cam1:FileName,"test")
 dbpf(${PREFIX}cam1:FileTemplate,"%s%s_%3.3d.hdf5")
