@@ -685,6 +685,9 @@ asynStatus pimegaDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
   } else if (function == ADNumExposures) {
     status |= numExposures(value);
     strcat(ok_str, "Exposures # set");
+  } else if (function == PimegaNumCameraCapture) {
+    status |= NumCameraCapture(value);
+    strcat(ok_str, "Acq Camera Num Capture # set");
   } else if (function == PimegaReset) {
     updateIOCStatus("Reseting. Please wait");
     status |= reset(value);
@@ -1541,6 +1544,7 @@ void pimegaDetector::getParameter(int index, double *value) {
 }
 
 void pimegaDetector::createParameters(void) {
+  createParam(pimegaNumCameraCaptureString, asynParamInt32, &PimegaNumCameraCapture);
   createParam(pimegaMedipixModeString, asynParamInt32, &PimegaMedipixMode);
   createParam(pimegaModuleString, asynParamInt32, &PimegaModule);
   createParam(pimegaefuseIDString, asynParamOctet, &PimegaefuseID);
@@ -2377,6 +2381,13 @@ asynStatus pimegaDetector::numExposures(unsigned number) {
   }
   setParameter(ADNumExposures, (int)number);
   SetAcqParamCameraNumCapture(pimega, number);
+  return asynSuccess;
+}
+
+asynStatus pimegaDetector::NumCameraCapture(unsigned number) {
+  int rc = 0;
+  SetAcqParamCameraNumCapture(pimega, number);
+  setParameter(PimegaNumCameraCapture, (int)number);
   return asynSuccess;
 }
 

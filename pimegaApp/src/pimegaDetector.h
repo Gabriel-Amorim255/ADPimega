@@ -84,6 +84,7 @@ typedef enum ioc_trigger_mode_t {
   IOC_TRIGGER_MODE_ALIGNMENT = 2
 } ioc_trigger_mode_t;
 
+#define pimegaNumCameraCaptureString "NUM_CAMERA_CAPTURE"
 #define pimegaMedipixModeString "MEDIPIX_MODE"
 #define pimegaefuseIDString "EFUSE_ID"
 #define pimegaOmrOPModeString "OMR_OP_MODE"
@@ -275,6 +276,7 @@ class pimegaDetector : public ADDriver {
  protected:
   int PimegaReset;
 #define FIRST_PIMEGA_PARAM PimegaReset
+  int PimegaNumCameraCapture;
   int PimegaMedipixMode;
   int PimegaefuseID;
   int PimegaOmrOPMode;
@@ -490,6 +492,7 @@ class pimegaDetector : public ADDriver {
   asynStatus imgChipID(uint8_t chip_id);
   asynStatus medipixBoard(uint8_t board_id);
   asynStatus numExposures(unsigned number);
+  asynStatus NumCameraCapture(unsigned number);
   asynStatus acqPeriod(double period_time_s);
   asynStatus acqTime(double acquire_time_s);
   asynStatus sensorBias(float voltage);
