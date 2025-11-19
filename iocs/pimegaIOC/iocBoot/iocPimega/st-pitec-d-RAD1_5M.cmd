@@ -66,7 +66,7 @@ epicsEnvSet("PIMEGA_NUM_MODULES_Y", "4")
 #              numModulesX         # The number of modules the pimega detector in the X direction.
 #              numModulesY         # The number of modules the pimega detector in the Y direction.
 
-pimegaDetectorConfig("$(PORT)",$(PIMEGA_MODULE01_IP),$(PIMEGA_MODULE02_IP),$(PIMEGA_MODULE03_IP),$(PIMEGA_MODULE04_IP),$(PIMEGA_MODULE05_IP),$(PIMEGA_MODULE06_IP),$(PIMEGA_MODULE07_IP),$(PIMEGA_MODULE08_IP),$(PIMEGA_MODULE09_IP),$(PIMEGA_MODULE10_IP),$(PIMEGA_PORT), $(XSIZE), $(YSIZE), $(DMODEL), 0, 0, 0, 0, 0, 1, 1, 5438, 6477, 1, $(PIMEGA_NUM_MODULES_X), $(PIMEGA_NUM_MODULES_Y))
+pimegaDetectorConfig("$(PORT)",$(PIMEGA_MODULE01_IP),$(PIMEGA_MODULE02_IP),$(PIMEGA_MODULE03_IP),$(PIMEGA_MODULE04_IP),$(PIMEGA_MODULE05_IP),$(PIMEGA_MODULE06_IP),$(PIMEGA_MODULE07_IP),$(PIMEGA_MODULE08_IP),$(PIMEGA_MODULE09_IP),$(PIMEGA_MODULE10_IP),$(PIMEGA_PORT), $(XSIZE), $(YSIZE), $(DMODEL), 0, 0, 0, 0, 0, 1, 1, 5418, 6467, 1, $(PIMEGA_NUM_MODULES_X), $(PIMEGA_NUM_MODULES_Y))
 
 dbLoadRecords("$(ADPIMEGA)/db/pimega.template","P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1,HDF5_R=HDF1:")
 dbLoadRecords("$(ADPIMEGA)/db/NDFile.template","P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
@@ -81,20 +81,27 @@ NDStdArraysConfigure("Image1", "$(QSIZE)", 0, "$(PORT)", 0, 0)
 dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),TYPE=Int32,FTVL=LONG,NELEMENTS=$(NELEMENTS)")
 
 # Load all other plugins using commonPlugins.cmd
-< commonPlugins.cmd
+< $(ADCORE)/iocBoot/commonPlugins.cmd
 set_requestfile_path("$(ADPIMEGA)/pimegaApp/Db")
 
+callbackSetQueueSize(5000)
 
 iocInit()
 
 dbpf(${PREFIX}cam1:MB_SendMode, 4)
-dbpf(${PREFIX}cam1:FilePath,"${PIMEGA_PSS}/database/acquisitions")
+dbpf(${PREFIX}cam1:FrameProcessMode, 0)
+dbpf(${PREFIX}cam1:FilePath,"${HOME}/database/acquisitions")
 dbpf(${PREFIX}cam1:FileName,"test")
 dbpf(${PREFIX}cam1:FileTemplate,"%s%s_%3.3d.hdf5")
-# dbpf(${PREFIX}cam1:dac_defaults_files,"${PIMEGA_PSS}/ioc/epics/iocs/pimegaIOC/iocBoot/iocPimega/config/RAD800k.ini")
+dbpf(${PREFIX}cam1:dac_defaults_files,"$(ADPIMEGA)/iocs/pimegaIOC/iocBoot/iocPimega/config/rad1_5M.ini")
 dbpf(${PREFIX}cam1:ImgChipNumberID, 1)
 dbpf(${PREFIX}image1:EnableCallbacks, 1)
 dbpf(${PREFIX}Stats2:EnableCallbacks, 1)
-
+dbpf(${PREFIX}cam1:AutoSave, 0)
+dbpf(${PREFIX}HDF1:FilePath, "${HOME}/database/acquisitions")
+dbpf(${PREFIX}HDF1:FileName, stream_output)
+dbpf(${PREFIX}HDF1:FileTemplate, %s%s_%3.3d.hdf5)
+dbpf(${PREFIX}HDF1:AutoSave, 1)
+dbpf(${PREFIX}HDF1:EnableCallbacks, 1)
 # save things every thirty seconds
-#create_monitor_set("auto_settings.req", 30,"P=$(PREFIX)")
+create_monitor_set("auto_settings.req", 30,"P=$(PREFIX)")

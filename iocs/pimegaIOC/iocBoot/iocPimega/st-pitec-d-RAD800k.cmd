@@ -83,21 +83,27 @@ NDStdArraysConfigure("Image1", "$(QSIZE)", 0, "$(PORT)", 0, 0)
 dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),TYPE=Int32,FTVL=LONG,NELEMENTS=$(NELEMENTS)")
 
 # Load all other plugins using commonPlugins.cmd
-< commonPlugins.cmd
+< $(ADCORE)/iocBoot/commonPlugins.cmd
 set_requestfile_path("$(ADPIMEGA)/pimegaApp/Db")
 
+callbackSetQueueSize(5000)
 
 iocInit()
 
 dbpf(${PREFIX}cam1:MB_SendMode, 4)
 dbpf(${PREFIX}cam1:FrameProcessMode, 4)
-dbpf(${PREFIX}cam1:FilePath,"${PIMEGA_PSS}/database/acquisitions")
+dbpf(${PREFIX}cam1:FilePath,"${HOME}/database/acquisitions")
 dbpf(${PREFIX}cam1:FileName,"test")
 dbpf(${PREFIX}cam1:FileTemplate,"%s%s_%3.3d.hdf5")
-# dbpf(${PREFIX}cam1:dac_defaults_files,"${PIMEGA_PSS}/ioc/epics/iocs/pimegaIOC/iocBoot/iocPimega/config/RAD800k.ini")
+dbpf(${PREFIX}cam1:dac_defaults_files,"$(ADPIMEGA)/iocs/pimegaIOC/iocBoot/iocPimega/config/rad800k.ini")
 dbpf(${PREFIX}cam1:ImgChipNumberID, 1)
 dbpf(${PREFIX}image1:EnableCallbacks, 1)
 dbpf(${PREFIX}Stats2:EnableCallbacks, 1)
+dbpf(${PREFIX}HDF1:FilePath,"${HOME}/database/acquisitions")
+dbpf(${PREFIX}HDF1:FileName, stream_output)
+dbpf(${PREFIX}HDF1:FileTemplate, %s%s_%3.3d.hdf5)
+dbpf(${PREFIX}HDF1:EnableCallbacks, 1)
+dbpf(${PREFIX}HDF1:AutoSave, 1)
 
 # save things every thirty seconds
-#create_monitor_set("auto_settings.req", 30,"P=$(PREFIX)")
+create_monitor_set("auto_settings.req", 30,"P=$(PREFIX)")
