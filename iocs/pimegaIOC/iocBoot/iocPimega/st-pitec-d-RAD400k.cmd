@@ -89,18 +89,18 @@ set_requestfile_path("$(ADPIMEGA)/pimegaApp/Db")
 
 iocInit()
 
-dbpf(${PREFIX}cam1:FilePath,"${PIMEGA_PSS}/database/acquisitions")
+dbpf(${PREFIX}cam1:FilePath,"${HOME}/database/acquisitions")
 dbpf(${PREFIX}cam1:FileName,"test")
 dbpf(${PREFIX}cam1:FileTemplate,"%s%s_%3.3d.hdf5")
-
-dbpf(${PREFIX}HDF1:FilePath,"${PIMEGA_PSS}/database/acquisitions")
-dbpf(${PREFIX}HDF1:FileName,"sample")
-dbpf(${PREFIX}HDF1:FileTemplate,"%s%s_%3.3d.hdf5")
-
-dbpf(${PREFIX}cam1:dac_defaults_files,"${PIMEGA_PSS}/ioc/epics/iocs/pimegaIOC/iocBoot/iocPimega/config/RAD400k.ini")
+dbpf(${PREFIX}cam1:dac_defaults_files,"$(ADPIMEGA)/iocs/pimegaIOC/iocBoot/iocPimega/config/rad400k.ini")
 dbpf(${PREFIX}cam1:ImgChipNumberID, 1)
 dbpf(${PREFIX}image1:EnableCallbacks, 1)
 dbpf(${PREFIX}Stats2:EnableCallbacks, 1)
-
+dbpf(${PREFIX}cam1:AutoSave, 0)
+dbpf(${PREFIX}HDF1:FilePath, "${HOME}/database/acquisitions")
+dbpf(${PREFIX}HDF1:FileName, stream_output)
+dbpf(${PREFIX}HDF1:FileTemplate, %s%s_%3.3d.hdf5)
+dbpf(${PREFIX}HDF1:AutoSave, 1)
+dbpf(${PREFIX}HDF1:EnableCallbacks, 1)
 # save things every thirty seconds
-#create_monitor_set("auto_settings.req", 30,"P=$(PREFIX)")
+create_monitor_set("auto_settings.req", 30,"P=$(PREFIX)")
