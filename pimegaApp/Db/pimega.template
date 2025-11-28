@@ -133,14 +133,12 @@ record(longout, "$(P)$(R)NumCameraCapture")
 	field(DRVL, "1")
 }
 
-record(longout, "$(P)$(R)NumCameraCapture_RBV")
+record(longin, "$(P)$(R)NumCameraCapture_RBV")
 {
-	field(DESC, "Set Num of images the backend is receiving readback")
-	field(DTYP, "asynInt32")
-	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NUM_CAMERA_CAPTURE")
-	field(DRVH, "2147483647")
-	field(DRVL, "1")
-	field(SCAN, "I/O Intr")
+    field(DESC, "Readback Num of images the backend is receiving")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))NUM_CAMERA_CAPTURE")
+    field(SCAN, "I/O Intr")
 }
 
 record(ao, "$(P)$(R)PeriodTime")

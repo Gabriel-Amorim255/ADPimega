@@ -684,6 +684,7 @@ asynStatus pimegaDetector::writeInt32(asynUser *pasynUser, epicsInt32 value) {
     strcat(ok_str, "OMR value set");
   } else if (function == ADNumExposures) {
     status |= numExposures(value);
+    status |= NumCameraCapture(value);
     strcat(ok_str, "Exposures # set");
   } else if (function == PimegaNumCameraCapture) {
     status |= NumCameraCapture(value);
